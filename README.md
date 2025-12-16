@@ -61,3 +61,13 @@ cargo run -- --help
 ```
 
 The clipboard helper tries `pbcopy`, `wl-copy`, `xclip`, then `clip`. Make sure one of those exists on your system. Tests cover the path + preset collectors; add new tests for additional behaviors.
+
+## Releasing
+
+This repo uses [`cargo-release`](https://github.com/crate-ci/cargo-release). Install it once with:
+
+```bash
+cargo install cargo-release
+```
+
+Then run the VS Code "Release Patch" task (or `cargo release patch --execute`) to bump the version, tag, and push. GitHub Actions will build binaries and publish the release automatically.

@@ -96,6 +96,21 @@
         "panel": "shared"
       },
       "detail": "Install gf from the latest release"
+    },
+    {
+      "label": "Release Patch",
+      "type": "shell",
+      "command": "cargo",
+      "args": ["release", "patch", "--execute"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Run cargo-release to cut a new patch version"
     }
   ]
 }

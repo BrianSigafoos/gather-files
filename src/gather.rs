@@ -150,11 +150,11 @@ fn promote_readme(base: &Path, files: &mut Vec<PathBuf>) {
         return;
     }
 
-    if let Some(idx) = find_preferred_readme(base, files) {
-        if idx != 0 {
-            let readme = files.remove(idx);
-            files.insert(0, readme);
-        }
+    if let Some(idx) = find_preferred_readme(base, files)
+        && idx != 0
+    {
+        let readme = files.remove(idx);
+        files.insert(0, readme);
     }
 }
 
