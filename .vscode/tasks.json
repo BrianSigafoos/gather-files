@@ -1,0 +1,101 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run gf",
+      "type": "shell",
+      "command": "cargo",
+      "args": ["run"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$rustc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Build and run gf"
+    },
+    {
+      "label": "Build gf",
+      "type": "shell",
+      "command": "cargo",
+      "args": ["build"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": ["$rustc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Build gf without running"
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "cargo",
+      "args": ["test"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": ["$rustc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Run all tests"
+    },
+    {
+      "label": "Clippy",
+      "type": "shell",
+      "command": "cargo",
+      "args": ["clippy"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$rustc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Run clippy linter"
+    },
+    {
+      "label": "Serve GitHub Pages",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "8000", "--directory", "docs"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "detail": "Starts a local server at http://localhost:8000 to preview the docs site"
+    },
+    {
+      "label": "Install gf",
+      "type": "shell",
+      "command": "curl -LsSf https://gf.bfoos.net/install.sh | bash",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "detail": "Install gf from the latest release"
+    }
+  ]
+}

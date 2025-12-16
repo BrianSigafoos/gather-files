@@ -2,6 +2,16 @@
 
 `gf` is a Rust CLI that gathers source files (README first), stitches them together with headers, copies the blob to your clipboard, and reports stats (character count + elapsed time).
 
+## Install
+
+```bash
+curl -LsSf https://gf.bfoos.net/install.sh | bash
+# or:
+cargo install --git https://github.com/BrianSigafoos/gather-files
+```
+
+Docs + a copy/paste installer live at https://gf.bfoos.net.
+
 ## Usage
 
 ```bash

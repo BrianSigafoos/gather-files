@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "JetBrains Mono", monospace;
+  background: radial-gradient(circle at top, #22223b, #0d0d14 65%);
+  color: #f2f2f2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 2rem;
+  gap: 2rem;
+}
+
+.terminal {
+  background: rgba(10, 10, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 35px 70px rgba(5, 5, 10, 0.8);
+  backdrop-filter: blur(12px);
+}
+
+.terminal-header {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px 12px 0 0;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.dot.red {
+  background: #ff5f56;
+}
+.dot.yellow {
+  background: #ffbd2e;
+}
+.dot.green {
+  background: #27ca40;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.terminal-body {
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.line {
+  white-space: pre;
+}
+
+.prompt {
+  color: #7df9ff;
+}
+
+.output {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.success {
+  margin-right: 0.4rem;
+}
+
+.accent {
+  color: #c084fc;
+}
+
+.dim {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.install {
+  text-align: center;
+}
+
+.install-cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: rgba(10, 10, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.install-cmd code {
+  color: #7df9ff;
+  font-size: 0.83rem;
+}
+
+.copy {
+  background: #c084fc;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  padding: 0.45rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.copy:hover {
+  background: #ddaaff;
+}
+
+.alt {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.alt code {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+footer {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+footer a {
+  color: #7df9ff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .terminal-body {
+    font-size: 0.75rem;
+    padding: 1.2rem;
+  }
+
+  .install-cmd {
+    flex-direction: column;
+  }
+
+  .install-cmd code {
+    font-size: 0.72rem;
+  }
+}
