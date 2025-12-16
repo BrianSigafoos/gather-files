@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build and Run gf",
+      "label": "Build and Run",
       "type": "shell",
       "command": "cargo",
       "args": ["run"],
@@ -17,11 +17,10 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
-      "detail": "Build and run gf"
+      }
     },
     {
-      "label": "Build gf",
+      "label": "Build",
       "type": "shell",
       "command": "cargo",
       "args": ["build"],
@@ -33,8 +32,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
-      "detail": "Build gf without running"
+      }
     },
     {
       "label": "Test",
@@ -52,8 +50,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
-      "detail": "Run all tests"
+      }
     },
     {
       "label": "Clippy",
@@ -68,7 +65,6 @@
         "reveal": "always",
         "panel": "shared"
       },
-      "detail": "Run clippy linter"
     },
     {
       "label": "Serve GitHub Pages",
@@ -83,11 +79,10 @@
       "presentation": {
         "reveal": "always",
         "panel": "new"
-      },
-      "detail": "Starts a local server at http://localhost:8000 to preview the docs site"
+      }
     },
     {
-      "label": "Install gf",
+      "label": "Install from latest release",
       "type": "shell",
       "command": "curl -LsSf https://gf.bfoos.net/install.sh | bash",
       "problemMatcher": [],
@@ -95,7 +90,6 @@
         "reveal": "always",
         "panel": "shared"
       },
-      "detail": "Install gf from the latest release"
     },
     {
       "label": "Release Patch",
@@ -109,8 +103,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
-      "detail": "Run cargo-release to cut a new patch version"
+      }
     }
   ]
 }
