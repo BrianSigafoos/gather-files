@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gf - gather-files</title>
+    <title>gf – Codebase → Clipboard → AI</title>
     <meta
       name="description"
-      content="Gather README-first file bundles with one command and copy them to your clipboard."
+      content="Gather source files into a prompt-ready blob. Paste into pro-tier AI models like Claude Pro, ChatGPT Pro, and Gemini Advanced."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,30 +17,39 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="hero">
+      <div class="badge">gather-files <span class="cmd">$ gf</span></div>
+      <h1>Codebase → Clipboard → AI</h1>
+      <p class="subtagline">
+        The smartest "pro" AI models are web-UI only.<br />
+        Gather your codebase and paste it in.
+      </p>
+    </header>
+
     <div class="terminal">
       <div class="terminal-header">
         <span class="dot red"></span>
         <span class="dot yellow"></span>
         <span class="dot green"></span>
-        <span class="title">gather-files (`gf`)</span>
+        <span class="title">terminal</span>
       </div>
       <div class="terminal-body">
         <div class="line"><span class="prompt">$</span> gf</div>
         <div class="line output">
-          <span class="success">📋</span> Copied README-first bundle from repo root
+          <span class="success">📋</span> 47 files · 28.4k chars · 0.02s
         </div>
         <div class="line"></div>
-        <div class="line"><span class="prompt">$</span> gf docs</div>
+        <div class="line"><span class="prompt">$</span> gf src</div>
         <div class="line output">
-          <span class="success">📋</span> Preset <span class="accent">docs</span> → clipboard
+          <span class="success">📋</span> 12 files · 8.1k chars · 0.01s
         </div>
         <div class="line"></div>
-        <div class="line"><span class="prompt">$</span> gf ~/project/app</div>
+        <div class="line"><span class="prompt">$</span> gf my_feature</div>
         <div class="line output">
-          <span class="success">📋</span> Gathered 12 files (1.2k chars) in 0.3s
+          <span class="success">📋</span> Preset <span class="accent">my_feature</span> → 6 files · 3.2k chars
         </div>
         <div class="line"></div>
-        <div class="line dim"># README promoted, duplicates removed, stats logged</div>
+        <div class="line dim"># README first · noise skipped · ready to paste</div>
       </div>
     </div>
 
@@ -50,15 +59,14 @@
         <button class="copy" onclick="copy()">Copy</button>
       </div>
       <p class="alt">
-        or:<br />
-        <code>
-          cargo install --git https://github.com/BrianSigafoos/gather-files
-        </code>
+        Or with Rust:
+        <code>cargo install --git https://github.com/BrianSigafoos/gather-files</code>
       </p>
     </div>
 
     <footer>
       <a href="https://github.com/BrianSigafoos/gather-files">GitHub</a>
+      <a href="https://tools.bfoos.net">More tools</a>
     </footer>
 
     <script>

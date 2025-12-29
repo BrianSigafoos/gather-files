@@ -17,6 +17,44 @@ body {
   gap: 2rem;
 }
 
+.hero {
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.25rem;
+}
+
+.badge .cmd {
+  color: #7df9ff;
+  margin-left: 0.5rem;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #fff 0%, #7df9ff 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.subtagline {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
 .terminal {
   background: rgba(10, 10, 20, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -83,7 +121,7 @@ body {
 }
 
 .accent {
-  color: #c084fc;
+  color: #fbbf24;
 }
 
 .dim {
@@ -111,7 +149,7 @@ body {
 }
 
 .copy {
-  background: #c084fc;
+  background: #fbbf24;
   color: #111;
   border: none;
   border-radius: 5px;
@@ -124,7 +162,7 @@ body {
 }
 
 .copy:hover {
-  background: #ddaaff;
+  background: #fcd34d;
 }
 
 .alt {
@@ -153,6 +191,19 @@ footer a:hover {
 }
 
 @media (max-width: 600px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .subtagline {
+    font-size: 0.85rem;
+  }
+
   .terminal-body {
     font-size: 0.75rem;
     padding: 1.2rem;
