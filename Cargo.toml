@@ -3,6 +3,10 @@ name = "gather-files"
 version = "0.1.3"
 edition = "2024"
 
+[[bin]]
+name = "gf"
+path = "src/main.rs"
+
 [dependencies]
 anyhow = "1.0.82"
 clap = { version = "4.5.7", features = ["derive"] }
