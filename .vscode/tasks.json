@@ -64,7 +64,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
+      }
     },
     {
       "label": "Serve GitHub Pages",
@@ -89,7 +89,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
+      }
     },
     {
       "label": "Release Patch",

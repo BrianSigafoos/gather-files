@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-gather-files is a Rust CLI (`gf`) that gathers file contents (with README first), copies them to the clipboard, and reports stats. 
+gather-files is a Rust CLI (`gf`) that gathers file contents (with README first), copies them to the clipboard, and reports stats.
 
 ## Development Commands
 
