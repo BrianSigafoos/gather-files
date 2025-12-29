@@ -29,7 +29,7 @@ pub fn collect_from_path(path: &Path) -> Result<Vec<PathBuf>> {
         }
     }
 
-    files.sort();
+    files.sort_unstable();
     promote_readme(path, &mut files);
     Ok(files)
 }
@@ -38,34 +38,17 @@ pub fn collect_from_path(path: &Path) -> Result<Vec<PathBuf>> {
 pub fn collect_from_preset(name: &str, preset: &Preset, repo_root: &Path) -> Result<Vec<PathBuf>> {
     let base = resolve_base(preset, repo_root);
     let exclude = build_globset(&preset.exclude)?;
+    let ignored_patterns = ignored_dir_globs();
     let mut ordered = IndexSet::new();
 
     for pattern in &preset.include {
-        let mut pattern_matches = Vec::new();
-        let walker = GlobWalkerBuilder::from_patterns(&base, &[pattern])
-            .follow_links(false)
-            .build()
-            .with_context(|| format!("invalid glob '{pattern}' in preset '{name}'"))?;
-
-        for entry in walker {
-            let entry = entry?;
-            if entry.file_type().is_dir() {
-                continue;
-            }
-
-            let path = entry.into_path();
-            if matches_exclude(&exclude, &base, &path) {
-                continue;
-            }
-
-            pattern_matches.push(path);
-        }
+        let pattern_matches =
+            collect_pattern_matches(name, pattern, &base, &exclude, &ignored_patterns)?;
 
         if pattern_matches.is_empty() {
             anyhow::bail!("no files matched pattern '{pattern}' in preset '{name}'");
         }
 
-        pattern_matches.sort();
         for path in pattern_matches {
             ordered.insert(path);
         }
@@ -79,25 +62,43 @@ pub fn collect_from_preset(name: &str, preset: &Preset, repo_root: &Path) -> Res
 /// Render file contents in the gather_files format.
 pub fn render_files(files: &[PathBuf], root: &Path) -> Result<(String, usize)> {
     let mut output = String::new();
+    let mut char_count = 0;
 
     for path in files {
         let display = display_path(path, root);
         let contents = fs::read_to_string(path)
             .with_context(|| format!("failed to read {}", path.display()))?;
 
-        output.push_str("-------\n");
-        output.push_str("# ");
-        output.push_str(&display);
-        output.push_str("\n\n");
-        output.push_str(&contents);
-        if !contents.ends_with('\n') {
-            output.push('\n');
-        }
-        output.push('\n');
+        char_count += append_file_section(&mut output, &display, &contents);
     }
 
-    let char_count = output.chars().count();
     Ok((output, char_count))
+}
+
+fn append_file_section(output: &mut String, display: &str, contents: &str) -> usize {
+    const HEADER_PREFIX: &str = "-------\n# ";
+    const HEADER_SUFFIX: &str = "\n\n";
+
+    output.reserve(HEADER_PREFIX.len() + display.len() + HEADER_SUFFIX.len() + contents.len() + 2);
+
+    output.push_str(HEADER_PREFIX);
+    output.push_str(display);
+    output.push_str(HEADER_SUFFIX);
+    output.push_str(contents);
+
+    let mut count = HEADER_PREFIX.len();
+    count += display.chars().count();
+    count += HEADER_SUFFIX.len();
+    count += contents.chars().count();
+
+    if !contents.ends_with('\n') {
+        output.push('\n');
+        count += 1;
+    }
+    output.push('\n');
+    count += 1;
+
+    count
 }
 
 fn display_path(path: &Path, root: &Path) -> String {
@@ -117,6 +118,52 @@ fn resolve_base(preset: &Preset, repo_root: &Path) -> PathBuf {
         Some(base) => repo_root.join(base),
         None => repo_root.to_path_buf(),
     }
+}
+
+fn ignored_dir_globs() -> Vec<String> {
+    IGNORED_DIRS
+        .iter()
+        .map(|dir| format!("!**/{dir}/"))
+        .collect()
+}
+
+fn build_preset_patterns<'a>(pattern: &'a str, ignored: &'a [String]) -> Vec<&'a str> {
+    let mut patterns = Vec::with_capacity(1 + ignored.len());
+    patterns.push(pattern);
+    patterns.extend(ignored.iter().map(String::as_str));
+    patterns
+}
+
+fn collect_pattern_matches(
+    preset_name: &str,
+    pattern: &str,
+    base: &Path,
+    exclude: &Option<GlobSet>,
+    ignored_patterns: &[String],
+) -> Result<Vec<PathBuf>> {
+    let patterns = build_preset_patterns(pattern, ignored_patterns);
+    let walker = GlobWalkerBuilder::from_patterns(base, &patterns)
+        .follow_links(false)
+        .build()
+        .with_context(|| format!("invalid glob '{pattern}' in preset '{preset_name}'"))?;
+
+    let mut matches = Vec::new();
+    for entry in walker {
+        let entry = entry?;
+        if entry.file_type().is_dir() {
+            continue;
+        }
+
+        let path = entry.into_path();
+        if matches_exclude(exclude, base, &path) {
+            continue;
+        }
+
+        matches.push(path);
+    }
+
+    matches.sort_unstable();
+    Ok(matches)
 }
 
 fn build_globset(patterns: &[String]) -> Result<Option<GlobSet>> {
@@ -274,6 +321,39 @@ presets:
         assert!(output.0.contains("# README.md"));
         assert!(output.0.contains("Hello world"));
         assert_eq!(output.1, output.0.chars().count());
+    }
+
+    #[test]
+    fn preset_skips_ignored_directories() {
+        let dir = tempdir().unwrap();
+        let base = dir.path();
+        write_file(base.join("README.md"), "root");
+        write_file(base.join("src/main.rs"), "main");
+        write_file(base.join("target/ignored.rs"), "ignore");
+        write_file(base.join("node_modules/pkg/index.js"), "ignore");
+
+        let config_yaml = r#"
+version: 1
+presets:
+  everything:
+    base: .
+    include:
+      - "**/*"
+"#;
+        let config_path = base.join(".gather-files.yaml");
+        fs::write(&config_path, config_yaml).unwrap();
+        let config = ConfigFile::load(&config_path).unwrap().unwrap();
+        let preset = config.preset("everything").unwrap();
+        let files = collect_from_preset("everything", preset, base).unwrap();
+        let paths = files
+            .iter()
+            .map(|p| p.strip_prefix(base).unwrap().display().to_string())
+            .collect::<Vec<_>>();
+
+        assert!(paths.contains(&"README.md".to_string()));
+        assert!(paths.contains(&"src/main.rs".to_string()));
+        assert!(!paths.iter().any(|path| path.starts_with("target/")));
+        assert!(!paths.iter().any(|path| path.starts_with("node_modules/")));
     }
 
     fn write_file(path: PathBuf, contents: &str) {

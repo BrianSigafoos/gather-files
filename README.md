@@ -1,16 +1,29 @@
 # gather-files (`gf`)
 
-`gf` is a Rust CLI that gathers source files (README first), stitches them together with headers, copies the blob to your clipboard, and reports stats (character count + elapsed time).
+**Codebase → Clipboard → AI.**
+
+Gather your source files (README first), stitch them with headers, and copy to clipboard—ready to paste into the smartest "pro" AI models.
+
+## Why?
+
+The best "pro" AI models (Claude Pro, ChatGPT Pro, etc) are often web-UI only. To use them with your codebase, you need to paste context manually. `gf` makes that trivial:
+
+- **One command** gathers your entire repo or a curated subset
+- **README first**—AI loves context upfront
+- **Skips noise**: `.git`, `node_modules`, `target`, binaries
+- **Reports stats**: character count + timing for token budgeting
 
 ## Install
 
 ```bash
 curl -LsSf https://gf.bfoos.net/install.sh | bash
-# or:
-cargo install --git https://github.com/BrianSigafoos/gather-files
 ```
 
-Docs + a copy/paste installer live at https://gf.bfoos.net.
+Or with Rust:
+
+```bash
+cargo install --git https://github.com/BrianSigafoos/gather-files
+```
 
 ## Usage
 
@@ -23,15 +36,9 @@ gf <preset>     # gather files defined in .gather-files.yaml
 gf --config path/to/config.yaml
 ```
 
-Behaviors:
-
-- README files near the requested path are promoted to the top.
-- Directories like `.git`, `target`, and `node_modules` are skipped automatically.
-- Output is formatted with header, path, blank line, file contents
-
 ## Configuration (`.gather-files.yaml`)
 
-When you call `gf preset_name`, the CLI looks up the preset in `.gather-files.yaml` (relative to the repo root unless you override `--config`). Presets let you gather arbitrary glob patterns from anywhere in the repo.
+Presets let you gather curated file sets with glob patterns:
 
 ```yaml
 version: 1
@@ -46,11 +53,11 @@ presets:
       - "app/controllers/feature/internal/**"
 ```
 
-- `base` (optional) scopes the glob patterns; omit it to use the repo root.
-- `include` lists glob patterns (using `**` etc.). At least one pattern is required.
-- `exclude` removes matches relative to `base` (optional).
+- `base` (optional): scopes glob patterns; defaults to repo root
+- `include`: glob patterns to gather (required, at least one)
+- `exclude`: patterns to skip (optional)
 
-`gf foo` errors if a preset pattern matches nothing to make mistakes obvious.
+Run `gf my_feature` to gather just those files. Errors if no files match.
 
 ## Development
 
@@ -60,14 +67,15 @@ cargo test
 cargo run -- --help
 ```
 
-The clipboard helper tries `pbcopy`, `wl-copy`, `xclip`, then `clip`. Make sure one of those exists on your system. Tests cover the path + preset collectors; add new tests for additional behaviors.
+The clipboard helper tries `pbcopy`, `wl-copy`, `xclip`, then `clip`. Tests cover path + preset collectors.
 
 ## Releasing
 
-This repo uses [`cargo-release`](https://github.com/crate-ci/cargo-release). Install it once with:
+Uses [`cargo-release`](https://github.com/crate-ci/cargo-release):
 
 ```bash
 cargo install cargo-release
+cargo release patch --execute
 ```
 
-Then run the VS Code "Release Patch" task (or `cargo release patch --execute`) to bump the version, tag, and push. GitHub Actions will build binaries and publish the release automatically.
+GitHub Actions builds binaries and publishes the release automatically.
