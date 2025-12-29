@@ -1,0 +1,29 @@
+# gather-files configuration
+# Docs: https://github.com/BrianSigafoos/gather-files
+version: 1
+
+presets:
+  # Example: gather all source code
+  # src:
+  #   include:
+  #     - "**/*.rs"
+  #     - "**/*.ts"
+  #     - "**/*.py"
+  #   exclude:
+  #     - "**/node_modules/**"
+  #     - "**/target/**"
+
+  # Example: gather documentation
+  # docs:
+  #   base: docs
+  #   include:
+  #     - "**/*.md"
+
+  # Example: gather config files
+  # config:
+  #   include:
+  #     - "*.toml"
+  #     - "*.yaml"
+  #     - "*.json"
+  #   exclude:
+  #     - "package-lock.json"
